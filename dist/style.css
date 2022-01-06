@@ -1,0 +1,26 @@
+root{
+    --primary: gray;
+    --secondary: white;
+    box-sizing: border-box;;
+}
+
+.body{
+    font-family: monospace;
+    background-color: black;
+}
+    
+.card-header{
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.card-body{
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.container{
+    margin: 100px auto;
+    justify-content: space-evenly;
+    display: flex;
+}
