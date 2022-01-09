@@ -1,153 +1,149 @@
 // Node commands
-const inquirer = require('inquirer');
 const fs = require('fs');
+const inquirer = require('inquirer');
+const generateHTML = require('./utils/generateHTML');
 const path = require('path');
 
 // Type of team member 
-const Engineer = require('./lib/engineer');
-const Intern = require('./lib/intern');
-const Manager = require('./lib/manager');
-const Employee = require('./lib/employee');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const Manager = require('./lib/Manager');
+const Employee = require('./lib/Employee');
 
-const OUTPUT_DIR = path.resolve(__dirname, "lib");
-const outputPath = path.join(OUTPUT_DIR, "./utils/index.html");
-const render = require('./utils/genrateHTML');
+const staffArr = [];
 
 //prompt questions for Team Profile 
-const employeeQuestion = []
-function typeOfMember() {
+const employeeQuestion = function () {
+
+const typeOfMember = function () {
     return inquirer.prompt([
         {
-            message: "What kind of member would you like to add?",
-            name: "type",
-            type: "list",
-            choices: [
+            type: 'list',
+            name: 'role',
+            message: 'Select team member to add?',
+            choices: [ 
                 "Manager",
-                "Intern",
-                "Engineer"
-            ],
-
+                "Engineer",
+                "Intern",        
+            ]
         }
-    ])
-        .then((data) => {
-            console.log(data);
-            if (data.type === "Manager") {
-                managerQuestion();
-            }
-            else if (data.type === "Intern") {
-                internQuestion();
-            }
-            else if (data.type === "Engineer") {
-                engineerQuestion();
-            }
-            else {
-                writeToFile();
-                console.log('Team Profile!');
-            }
-        });
-}
-function managerQuestion() {
-    return (
-        inquirer.prompt([
-            {
-                message: "What is your Managers name?",
-                name: "name",
-                type: "input",
-            },
-            {
-                message: "What is your ID?",
-                name: "id",
-                type: "input",
-            },
-            {
-                message: "What is your email?",
-                name: "email",
-                type: "input",
-            },
-            {
-                message: "What is your office number?",
-                name: "number",
-                type: "input",
-            },
-        ])
-            // passes data from inquirer and pass into employeequestion
+   ])
+    //prompt to manager
             .then((data) => {
-                const newManager = new Manager(data.name, data.id, data.email, data.officeNumber);
-                employeeQuestion.push(newManager);
-                typeOfMember();
-            })
-    );
-}
-// passes data from inquirer and pass into employeequestion. 
-function engineerQuestion() {
-    return (
-        inquirer.prompt([
-            {
-                message: "What is your Engineers name?",
-                name: "name",
-                type: "input",
-            },
-            {
-                message: "What is your ID?",
-                name: "id",
-                type: "input",
-            },
-            {
-                message: "What is your email?",
-                name: "email",
-                type: "input",
-            },
-            {
-                message: "What is your Github User?",
-                name: "Github",
-                type: "input",
-            },
-        ])
-            // passes data from inquirer and pass into employeequestion
-            .then((data) => {
-                const newEngineer = new Engineer(data.name, data.id, data.email, data.Github);
-                employeeQuestion.push(newEngineer);
-                typeOfMember();
-            })
-    );
-}
-// Intern data input
-function internQuestion() {
-    return (
-        inquirer.prompt([
-            {
-                message: "What is your Interns name?",
-                name: "name",
-                type: "input",
-            },
-            {
-                message: "What is your ID?",
-                name: "id",
-                type: "input",
-            },
-            {
-                message: "What is your email?",
-                name: "email",
-                type: "input",
-            },
-            {
-                message: "What school did you go to?",
-                name: "school",
-                type: "input",
-            },
+                if(data.role === "Manager") {
+                    // manager questions 
+                    return inquirer.prompt([
+                        {
+                            type: 'input',
+                            name: 'name',
+                            message: "Enter team member\'s name:"
+                        },
+                        {
+                            type: 'input',
+                            name: 'id',
+                            message: 'Enter team member\'s id:'
+                        },
+                        {
+                            type: 'input',
+                            name: 'email',
+                            message: 'What is team member\'s email?'
+                        },
+                        {
+                            type: 'input',
+                            name: 'office',
+                            message: "Enter team member\'s office number?"
+                        },
+                        //team member (manager)class that redirects to the staff array 
+                    ]).then(function (data) {
+                        const manager = new Manager(data.name, data.id, data.email, data.office);
+                        staffArr.push(manager)
+                        console.log('You added a manager!') // console log to user once roles prompts are completed 
+                        newMember()
+                    })
+                } else if (data.role === "Engineer") {
+                    return inquirer.prompt([
+                        {
+                            type: 'data',
+                            name: 'name',
+                            message: "Enter team member\'s name:"
+                        },
+                        {
+                            type: 'data',
+                            name: 'id',
+                            message: 'Enter team member\'s id:'
+                        },
+                        {
+                            type: 'data',
+                            name: 'email',
+                            message: 'What is team member\'s email?'
+                        },
+                        {
+                            type: 'data',
+                            name: 'github',
+                            message: "Enter team member\'s GitHub username:"
+                        },
+                    ]) .then(function (data) {
+                        const engineer = new Engineer(data.name, data.id, data.email, data.github)
+                        staffArr.push(engineer)
+                        console.log('You added a engineer!') // console log to user once roles prompts are completed 
+                        newMember()
+                    })
+                } else if (data.role === "Intern") {
+                    return inquirer.prompt([
+                        {
+                            type: 'data',
+                            name: 'name',
+                            message: "Enter team member\'s name:"
+                        },
+                        {
+                            type: 'data',
+                            name: 'id',
+                            message: 'Enter team member\'s id:'
+                        },
+                        {
+                            type: 'data',
+                            name: 'email',
+                            message: 'What is team member\'s email?'
+                        },
+                        {
+                            type: 'data',
+                            name: 'school',
+                            message: "What school did team member attend?"
+                        },
+                    ]) .then(function(data) {
+                        const intern = new Intern(data.name, data.id, data.email, data.school)
+                        staffArr.push(intern)
+                        console.log('You added a intern!')// console log to user once roles prompts are completed 
+                        newMember()
+                    })              
+                }
+        })
 
-        ])
-            //take data from inquirer and pass into employeequestion
-            .then((data) => {
-                const newIntern = new Intern(data.name, data.id, data.email, data.school);
-                employeeQuestion.push(newIntern);
-                typeOfMember();
-            })
-    );
 }
-typeOfMember();
-// Writes data to HTML  
-const writeToFile = () => {
-    const contentHTML = render(employeeQuestion);
-    fs.writeFileSync(outputPath, contentHTML, "utf-8");
+
+const newMember = function () {
+    return inquirer.prompt([
+        {
+            type: "confirm",
+            name: "newMember",
+            message: "Do you want to add another team member ?",    // askes user if they wish to enter another team member
+        }
+    ]).then((data) => {
+        if(data.newMember === true){
+            typeOfMember();
+        } else {
+            console.log(staffArr[0].name)
+            inputCompleted(staffArr);
+        }
+    });
 };
+
+
+// Writes data to HTML  
+function inputCompleted(staffArr) {
+    fs.writeFileSync("./utils/index.html",generateHTML(staffArr), "utf-8")
+    console.log("You created a index.html") 
+    }
+typeOfMember()
+}
+employeeQuestion(); 
