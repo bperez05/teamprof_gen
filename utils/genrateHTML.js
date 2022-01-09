@@ -89,7 +89,7 @@ return `
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-        <!-- Bootstrap CSS -->
+        <!-- CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="../dist/style.css">
         <title>Team Profile Generator</title>
@@ -107,12 +107,13 @@ return `
             <div class="card employee-card">
                 <div class="card-header">
                     <h2 class="card-title">js</h2>
+                    <h3 class="card-title"><i class="fas fa-hat-wizard"></i> undefined</h3>
                 </div>
                 <div class="card-body">
                     
                         <div class="group-item">ID: js</div>
                         <div class="group-item">Email: js</div>
-                        <div class="group-item">School: js</div>
+                        <div class="group-item">Github: js</div> target="_blank">1234</a></div>
                     
                 </div>
             </div>
@@ -120,7 +121,7 @@ return `
     </div>
   
 </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>`
 }
